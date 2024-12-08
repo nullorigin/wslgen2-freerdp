@@ -31,7 +31,7 @@
 #include "prim_internal.h"
 #include "prim_YUV.h"
 
-#if defined(SSE2_ENABLED)
+#if defined(SSE_AVX_INTRINSICS_ENABLED)
 #include <emmintrin.h>
 #include <tmmintrin.h>
 
@@ -900,8 +900,8 @@ static INLINE void ssse3_RGBToAVC444YUVv2_BGRX_DOUBLE_ROW(
 				const __m128i mask =
 				    _mm_set_epi8((char)0x80, (char)0x80, (char)0x80, (char)0x80, (char)0x80,
 				                 (char)0x80, (char)0x80, (char)0x80, 15, 13, 11, 9, 7, 5, 3, 1);
-				const __m128i udo = _mm_shuffle_epi8(uo, mask);
-				_mm_storel_epi64((__m128i*)yOddChromaDst1, udo);
+				const __m128i udo /* codespell:ignore udo */ = _mm_shuffle_epi8(uo, mask);
+				_mm_storel_epi64((__m128i*)yOddChromaDst1, udo); // codespell:ignore udo
 				yOddChromaDst1 += 8;
 			}
 
@@ -1496,7 +1496,7 @@ static pstatus_t ssse3_YUV420CombineToYUV444(avc444_frame_type type,
 
 void primitives_init_YUV_ssse3(primitives_t* WINPR_RESTRICT prims)
 {
-#if defined(SSE2_ENABLED)
+#if defined(SSE_AVX_INTRINSICS_ENABLED)
 	generic = primitives_get_generic();
 	primitives_init_YUV(prims);
 
@@ -1512,7 +1512,7 @@ void primitives_init_YUV_ssse3(primitives_t* WINPR_RESTRICT prims)
 		prims->YUV420CombineToYUV444 = ssse3_YUV420CombineToYUV444;
 	}
 #else
-	WLog_VRB(PRIM_TAG, "undefined WITH_SSE2");
+	WLog_VRB(PRIM_TAG, "undefined WITH_SIMD or SSSE3 intrinsics not available");
 	WINPR_UNUSED(prims);
 #endif
 }

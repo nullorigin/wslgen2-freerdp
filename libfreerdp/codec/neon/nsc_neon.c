@@ -26,19 +26,15 @@
 #include "../nsc_types.h"
 #include "nsc_neon.h"
 
-#if defined(WITH_NEON)
-#if defined(_M_ARM64) || defined(_M_ARM)
-#define NEON_ENABLED
-#endif
-#endif
+#include "../../core/simd.h"
 
-#if defined(NEON_ENABLED)
+#if defined(NEON_INTRINSICS_ENABLED)
 #define TAG FREERDP_TAG("codec.nsc.neon")
 #endif
 
 void nsc_init_neon(NSC_CONTEXT* context)
 {
-#if defined(NEON_ENABLED)
+#if defined(NEON_INTRINSICS_ENABLED)
 	if (!IsProcessorFeaturePresent(PF_ARM_NEON_INSTRUCTIONS_AVAILABLE))
 		return;
 

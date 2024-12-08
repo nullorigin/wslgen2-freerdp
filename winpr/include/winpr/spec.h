@@ -35,6 +35,7 @@ WINPR_PRAGMA_DIAG_IGNORED_RESERVED_IDENTIFIER
 
 #else
 
+#if defined(NONAMELESSUNION)
 #define DUMMYUNIONNAME u
 #define DUMMYUNIONNAME1 u1
 #define DUMMYUNIONNAME2 u2
@@ -51,6 +52,24 @@ WINPR_PRAGMA_DIAG_IGNORED_RESERVED_IDENTIFIER
 #define DUMMYSTRUCTNAME3 s3
 #define DUMMYSTRUCTNAME4 s4
 #define DUMMYSTRUCTNAME5 s5
+#else
+#define DUMMYUNIONNAME
+#define DUMMYUNIONNAME1
+#define DUMMYUNIONNAME2
+#define DUMMYUNIONNAME3
+#define DUMMYUNIONNAME4
+#define DUMMYUNIONNAME5
+#define DUMMYUNIONNAME6
+#define DUMMYUNIONNAME7
+#define DUMMYUNIONNAME8
+
+#define DUMMYSTRUCTNAME
+#define DUMMYSTRUCTNAME1
+#define DUMMYSTRUCTNAME2
+#define DUMMYSTRUCTNAME3
+#define DUMMYSTRUCTNAME4
+#define DUMMYSTRUCTNAME5
+#endif
 
 #if (defined(_M_AMD64) || defined(_M_ARM)) && !defined(_WIN32)
 #define _UNALIGNED __unaligned
@@ -324,7 +343,7 @@ WINPR_PRAGMA_DIAG_IGNORED_RESERVED_IDENTIFIER
 #define _In_count_(size)
 #define _In_count_c_(size)
 #define _In_count_x_(size)
-#define _In_defensive_(annotes)
+#define _In_defensive_(annotates)
 #define _In_opt_
 #define _In_opt_bytecount_(size)
 #define _In_opt_bytecount_c_(size)
@@ -369,7 +388,7 @@ WINPR_PRAGMA_DIAG_IGNORED_RESERVED_IDENTIFIER
 #define _Inout_count_(size)
 #define _Inout_count_c_(size)
 #define _Inout_count_x_(size)
-#define _Inout_defensive_(annotes)
+#define _Inout_defensive_(annotates)
 #define _Inout_opt_
 #define _Inout_opt_bytecap_(size)
 #define _Inout_opt_bytecap_c_(size)
@@ -450,7 +469,7 @@ WINPR_PRAGMA_DIAG_IGNORED_RESERVED_IDENTIFIER
 #define _Out_cap_x_(size)
 #define _Out_capcount_(capcount)
 #define _Out_capcount_x_(capcount)
-#define _Out_defensive_(annotes)
+#define _Out_defensive_(annotates)
 #define _Out_opt_
 #define _Out_opt_bytecap_(size)
 #define _Out_opt_bytecap_c_(size)

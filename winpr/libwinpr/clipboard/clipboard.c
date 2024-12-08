@@ -491,13 +491,32 @@ BOOL ClipboardSetData(wClipboard* clipboard, UINT32 formatId, const void* data, 
 		return FALSE;
 
 	free(clipboard->data);
-	clipboard->data = malloc(size);
+
+	clipboard->data = calloc(size + sizeof(WCHAR), sizeof(char));
 
 	if (!clipboard->data)
 		return FALSE;
 
 	memcpy(clipboard->data, data, size);
-	clipboard->size = size;
+
+	/* For string values we don´t know if they are '\0' terminated.
+	 * so set the size to the full length in bytes (e.g. string length + 1)
+	 */
+	switch (formatId)
+	{
+		case CF_TEXT:
+		case CF_OEMTEXT:
+			clipboard->size = (UINT32)(strnlen(clipboard->data, size) + 1UL);
+			break;
+		case CF_UNICODETEXT:
+			clipboard->size =
+			    (UINT32)((_wcsnlen(clipboard->data, size / sizeof(WCHAR)) + 1UL) * sizeof(WCHAR));
+			break;
+		default:
+			clipboard->size = size;
+			break;
+	}
+
 	clipboard->formatId = formatId;
 	clipboard->sequenceNumber++;
 	return TRUE;
